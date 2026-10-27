@@ -70,3 +70,9 @@ LEFT JOIN cohort_lifespan_base c ON s.channel = c.channel;
 """
 
 conn.execute(transformation_sql)
+
+# Export the clean data model to a final clean CSV file for Tableau Public
+conn.execute("COPY fct_marketing_performance TO 'tableau_fct_marketing_performance.csv' (HEADER, DELIMITER ',');")
+
+print("Success! 'tableau_fct_marketing_performance.csv' is ready for visualization.")
+conn.close()
