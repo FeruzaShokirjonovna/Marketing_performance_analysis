@@ -17,3 +17,17 @@ conn.execute("""
 """)
 
 print("Architecting fct_marketing_performance core star schema table...")
+
+# Execute SQL Metrics Transformation
+transformation_sql = """
+CREATE OR REPLACE TABLE fct_marketing_performance AS
+WITH daily_spend_summary AS (
+    SELECT 
+        CAST(date AS DATE) AS event_date,
+        channel,
+        SUM(spend) AS total_ad_spend,
+        SUM(clicks) AS total_clicks,
+        SUM(impressions) AS total_impressions
+    FROM stg_meta_spend
+    GROUP BY 1, 2
+),
